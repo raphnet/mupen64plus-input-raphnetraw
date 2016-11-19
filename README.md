@@ -15,8 +15,8 @@ French: [Plugin d'accès direct aux manettes N64 pour mupen64plus]((http://raphn
 
 ## License
 
-This project is licensed under the terms of the GNU General Public License, version 2.
-Source code is available on the project homepage and on GitHub.
+* This project is licensed under the terms of the GNU General Public License, version 2.
+* Source code is available on the project homepage and on GitHub.
 
 ## How to use the plugin
 
@@ -37,7 +37,7 @@ for your architecture.
 
 ### Windows (32 and 64 bit)
 
-You may use the releases distributed by raphnet in an zip file. The file contents will look
+You may use the releases distributed by raphnet in a zip file. The file contents will look
 like this:
 
 ```
