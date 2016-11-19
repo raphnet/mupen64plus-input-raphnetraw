@@ -11,7 +11,7 @@ adapters (versions 3 and up) to let the emulated game communicate with the contr
 ## Project homepage
 
 * English: [Direct N64 controller access plugin mupen64plus](http://raphnet.net/programmation/mupen64plus-input-raphnetraw/index_en.php)
-* French: [Plugin d'accès direct aux manettes N64 pour mupen64plus]((http://raphnet.net/programmation/mupen64plus-input-raphnetraw/index.php)
+* French: [Plugin d'accès direct aux manettes N64 pour mupen64plus](http://raphnet.net/programmation/mupen64plus-input-raphnetraw/index.php)
 
 ## License
 
