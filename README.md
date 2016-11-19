@@ -16,6 +16,43 @@ French: [Plugin d'accès direct aux manettes N64 pour mupen64plus]((http://raphn
 ## License
 
 This project is licensed under the terms of the GNU General Public License, version 2.
+Source code is available on the project homepage and on GitHub.
+
+## How to use the plugin
+
+Regardless of your operating system, you will need to install the plugin file(s)
+in a directory mupen64plus will search for plugins (eg: Along the other plugin files).
+Then, you must tell mupen64plus to use it. eg:
+
+```
+mupen64plus --input mupen64plus-input-raphnetraw
+```
+
+Where to obtain the plugin files is described below.
+
+### Linux
+
+Please compile it from sources (howto below). This will generate mupen64plus-input-raphnetraw.so
+for your architecture.
+
+### Windows (32 and 64 bit)
+
+You may use the releases distributed by raphnet in an zip file. The file contents will look
+like this:
+
+```
+mupen64plus-input-raphnetraw-windows-0.9/
+mupen64plus-input-raphnetraw-windows-0.9/README.md
+mupen64plus-input-raphnetraw-windows-0.9/dist_win64/
+mupen64plus-input-raphnetraw-windows-0.9/dist_win64/libhidapi-0.dll
+mupen64plus-input-raphnetraw-windows-0.9/dist_win64/mupen64plus-input-raphnetraw.dll
+mupen64plus-input-raphnetraw-windows-0.9/dist_win32/
+mupen64plus-input-raphnetraw-windows-0.9/dist_win32/libhidapi-0.dll
+mupen64plus-input-raphnetraw-windows-0.9/dist_win32/mupen64plus-input-raphnetraw.dll
+```
+
+If you use a 64-bit version of mupen64plus, copy the files from the `dist_win64` directory. For
+the 32-bit version, copy the files from the `dist_win32` directory.
 
 ## Compiling the Linux / Unix version
 
