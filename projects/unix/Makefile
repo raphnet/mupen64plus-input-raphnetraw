@@ -234,6 +234,7 @@ SOURCE = \
 	$(SRCDIR)/plugin.c \
 	$(SRCDIR)/gcn64lib.c \
 	$(SRCDIR)/gcn64.c \
+	$(SRCDIR)/hexdump.c
 
 ifeq ($(OS),MINGW)
 SOURCE += $(SRCDIR)/osal_dynamiclib_win32.c
