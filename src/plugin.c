@@ -266,10 +266,16 @@ EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 		}
 	}
 
-    DebugMessage(M64MSG_INFO, "%s version %i.%i.%i initialized.", PLUGIN_NAME, VERSION_PRINTF_SPLIT(PLUGIN_VERSION));
+    DebugMessage(M64MSG_INFO, "%s version %i.%i.%i %s(compiled "__DATE__" "__TIME__") initialized.", PLUGIN_NAME, VERSION_PRINTF_SPLIT(PLUGIN_VERSION),
+#ifdef _DEBUG
+	"DEBUG "
+#else
+	""
+#endif
+	);
 }
 
-#ifdef PLUGINDBG
+#ifdef _DEBUG
 static void debug_raw_commands(unsigned char *command)
 {
 	int tx_len = command[0];
@@ -335,7 +341,7 @@ EXPORT void CALL ReadController(int Control, unsigned char *Command)
 			int rx_len = Command[1];
 			int res;
 
-#ifdef PLUGINDBG
+#ifdef _DEBUG
 			if (Control == 0) {
 				debug_raw_commands(Command);
 			}
