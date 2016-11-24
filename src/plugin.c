@@ -366,8 +366,21 @@ EXPORT void CALL ReadController(int Control, unsigned char *Command)
 /* Unused by this plugin, but required. */
 EXPORT void CALL ControllerCommand(int Control, unsigned char *Command) { }
 EXPORT void CALL GetKeys( int Control, BUTTONS *Keys ) { }
-EXPORT void CALL RomClosed(void) { }
-EXPORT int CALL RomOpen(void) { return 1; }
+
+EXPORT void CALL RomClosed(void)
+{
+	if (gcn64_handle) {
+		gcn64lib_suspendPolling(gcn64_handle, 0);
+	}
+}
+
+EXPORT int CALL RomOpen(void)
+{
+	if (gcn64_handle) {
+		gcn64lib_suspendPolling(gcn64_handle, 1);
+	}
+	return 1;
+}
 
 /******************************************************************
   Function: SDL_KeyDown
