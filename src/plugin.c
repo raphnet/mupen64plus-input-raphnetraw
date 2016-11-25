@@ -52,6 +52,12 @@
 #include "gcn64.h"
 #include "gcn64lib.h"
 
+//#define ENABLE_TIMING
+
+#ifdef ENABLE_TIMING
+#include <sys/time.h>
+#endif
+
 #ifdef __linux__
 #endif /* __linux__ */
 
@@ -85,6 +91,7 @@ static void (*l_DebugCallback)(void *, int, const char *) = NULL;
 static void *l_DebugCallContext = NULL;
 static int l_PluginInit = 0;
 static gcn64_hdl_t gcn64_handle = NULL;
+static g_adapter_n_channels = 2;
 
 /* Global functions */
 void DebugMessage(int level, const char *message, ...)
@@ -254,7 +261,7 @@ EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 	gcn64_freeListCtx(lctx);
 
 	if (gcn64_handle) {
-		for (i=0; i<4; i++) {
+		for (i=0; i<g_adapter_n_channels; i++) {
 			ControlInfo.Controls[i].RawData = 1;
 
 			/* Setting this is currently required or we
@@ -275,6 +282,24 @@ EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 	);
 }
 
+
+static void timing(int start, const char *label)
+{
+#ifdef ENABLE_TIMING
+	static struct timeval tv_start;
+	struct timeval tv_now;
+
+	if (start) {
+		gettimeofday(&tv_start, NULL);
+		return;
+	}
+
+	gettimeofday(&tv_now, NULL);
+
+	printf("%s: %d us\n", label, (tv_now.tv_sec - tv_start.tv_sec) * 1000000 + (tv_now.tv_usec - tv_start.tv_usec) );
+#endif
+}
+
 #ifdef _DEBUG
 static void debug_raw_commands_in(unsigned char *command, int channel_id)
 {
@@ -293,7 +318,17 @@ static void debug_raw_commands_in(unsigned char *command, int channel_id)
 static void debug_raw_commands_out(unsigned char *command, int channel_id)
 {
 	int result = command[1];
-	printf("chn %d: result: 0x%02x\n", channel_id, result);
+	int i;
+
+	printf("chn %d: result: 0x%02x : ", channel_id, result);
+	if (0 == (command[1] & 0xC0)) {
+		for (i=0; i<result; i++) {
+			printf("0x%02x ", command[2+i]);
+		}
+	} else {
+		printf("error\n");
+	}
+	printf("\n");
 }
 
 #endif
@@ -377,6 +412,7 @@ EXPORT void CALL ReadController(int Control, unsigned char *Command)
 				return;
 			}
 
+			timing(1, NULL);
 			res = gcn64lib_rawSiCommand(gcn64_handle,
 									Control,		// Channel
 									Command + 2,	// TX data
@@ -384,6 +420,7 @@ EXPORT void CALL ReadController(int Control, unsigned char *Command)
 									Command + 2 + tx_len,	// RX data
 									rx_len		// TX data len
 								);
+			timing(0, "rawCommand");
 
 			if (res <= 0) {
 				// 0x00 - no error, operation successful.
