@@ -251,8 +251,6 @@ EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 			DebugMessage(M64MSG_ERROR, "Could not open gcn64 device\n");
 		}
 
-		gcn64lib_suspendPolling(gcn64_handle, 1);
-
 		DebugMessage(M64MSG_INFO, "Using USB device 0x%04x:0x%04x serial '%ls' name '%ls'",
 						inf.usb_vid, inf.usb_pid, inf.str_serial, inf.str_prodname);
 
