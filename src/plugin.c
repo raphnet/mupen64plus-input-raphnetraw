@@ -276,19 +276,26 @@ EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 }
 
 #ifdef _DEBUG
-static void debug_raw_commands(unsigned char *command)
+static void debug_raw_commands_in(unsigned char *command, int channel_id)
 {
 	int tx_len = command[0];
-	int rx_len = command[1];
+	int rx_len = command[1] & 0x3F;
 	int i;
 
-	printf("tx[%d] = {", tx_len);
+	printf("chn %d: tx[%d] = {", channel_id, tx_len);
 	for (i=0; i<tx_len; i++) {
 		printf("0x%02x ", command[2+i]);
 	}
 	printf("}, expecting %d byte%c\n", rx_len, rx_len > 1 ? 's':' ');
 
 }
+
+static void debug_raw_commands_out(unsigned char *command, int channel_id)
+{
+	int result = command[1];
+	printf("chn %d: result: 0x%02x\n", channel_id, result);
+}
+
 #endif
 
 /******************************************************************
@@ -342,10 +349,33 @@ EXPORT void CALL ReadController(int Control, unsigned char *Command)
 			int res;
 
 #ifdef _DEBUG
-			if (Control == 0) {
-				debug_raw_commands(Command);
-			}
+			debug_raw_commands_in(Command, Control);
 #endif
+
+			if (!rx_len) {
+				return;
+			}
+
+			// When a CIC challenge took place in update_pif_write(), the pif ram
+			// contains a bunch 0xFF followed by 0x00 at offsets 46 and 47. Offset
+			// 48 onwards contains the challenge answer.
+			//
+			// Then when update_pif_read() is called, the 0xFF bytes are be skipped
+			// up to the two 0x00 bytes that increase the channel to 2. Then the
+			// challenge answer is (incorrectly) processed as if it were commands
+			// for the third controller.
+			//
+			// This cause issues with the raphnetraw plugin since it modifies pif ram
+			// to store the result or command error flags. This corrupts the reponse
+			// and leads to challenge failure.
+			//
+			// As I know of no controller commands above 0x03, the filter below guards
+			// against this condition...
+			//
+			if (Control == 2 && Command[2] > 0x03) {
+				DebugMessage(M64MSG_WARNING, "Invalid controller command\n");
+				return;
+			}
 
 			res = gcn64lib_rawSiCommand(gcn64_handle,
 									Control,		// Channel
@@ -354,17 +384,24 @@ EXPORT void CALL ReadController(int Control, unsigned char *Command)
 									Command + 2 + tx_len,	// RX data
 									rx_len		// TX data len
 								);
+
 			if (res <= 0) {
-				//
 				// 0x00 - no error, operation successful.
 				// 0x80 - error, device not present for specified command.
 				// 0x40 - error, unable to send/recieve the number bytes for command type.
 				//
 				// Diagrams 1.2-1.4 shows that lower bits are preserved (i.e. The length
 				// byte is not completely replaced).
-				Command[1] &= 0xC0;
+				Command[1] &= ~0xC0;
 				Command[1] |= 0x80;
+			} else {
+				// Success. Make sure error bits are clear, if any.
+				Command[1] &= ~0xC0;
 			}
+
+#ifdef _DEBUG
+			debug_raw_commands_out(Command, Control);
+#endif
 		}
 	}
 }
