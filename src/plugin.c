@@ -91,7 +91,7 @@ static void (*l_DebugCallback)(void *, int, const char *) = NULL;
 static void *l_DebugCallContext = NULL;
 static int l_PluginInit = 0;
 static gcn64_hdl_t gcn64_handle = NULL;
-static g_adapter_n_channels = 2;
+static int g_adapter_n_channels = 2;
 
 /* Global functions */
 void DebugMessage(int level, const char *message, ...)
@@ -259,6 +259,10 @@ EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 	gcn64_freeListCtx(lctx);
 
 	if (gcn64_handle) {
+
+		g_adapter_n_channels = gcn64_info_supported_channels(&inf);
+		DebugMessage(M64MSG_INFO, "Adapter supports %d raw channels", g_adapter_n_channels);
+
 		for (i=0; i<g_adapter_n_channels; i++) {
 			ControlInfo.Controls[i].RawData = 1;
 
