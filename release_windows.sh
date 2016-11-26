@@ -48,6 +48,8 @@ cd .. # exit projects
 cp projects/unix/dist_win32 -rv $RELEASEDIR/$DIRNAME
 cp projects/unix/dist_win64 -rv $RELEASEDIR/$DIRNAME
 cp README.md -rv $RELEASEDIR/$DIRNAME
+cp README.md -rv $RELEASEDIR/$DIRNAME/readme.txt
+cp RELEASE -rv $RELEASEDIR/$DIRNAME/releases.txt
 
 cd $RELEASEDIR
 
