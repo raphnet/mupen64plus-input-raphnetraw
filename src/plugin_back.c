@@ -28,14 +28,15 @@
 #include "gcn64.h"
 #include "gcn64lib.h"
 #include "version.h"
-#define ENABLE_TIMING
+
+//#define ENABLE_TIMING
 
 #ifdef ENABLE_TIMING
 #include <sys/time.h>
 #endif
 
-//#define TIME_RAW_IO
-#define TIME_COMMAND_TO_READ
+#define TIME_RAW_IO
+//#define TIME_COMMAND_TO_READ
 
 static void nodebug(int l, const char *m, ...) { }
 
