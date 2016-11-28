@@ -231,7 +231,8 @@ OBJDIR = _obj$(POSTFIX)
 
 # list of source files to compile
 SOURCE = \
-	$(SRCDIR)/plugin.c \
+	$(SRCDIR)/plugin_front.c \
+	$(SRCDIR)/plugin_back.c \
 	$(SRCDIR)/gcn64lib.c \
 	$(SRCDIR)/gcn64.c \
 	$(SRCDIR)/hexdump.c

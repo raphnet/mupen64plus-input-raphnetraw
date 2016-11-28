@@ -43,9 +43,6 @@
 
 #define PAK_IO_RUMBLE       0xC000      // the address where rumble-commands are sent to
 
-/* global function definitions */
-extern void DebugMessage(int level, const char *message, ...);
-
 /* declarations of pointers to Core config functions */
 extern ptr_ConfigListSections     ConfigListSections;
 extern ptr_ConfigOpenSection      ConfigOpenSection;
