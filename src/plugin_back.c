@@ -53,6 +53,10 @@ int pb_init(pb_debugFunc debugFn)
 int pb_shutdown(void)
 {
 	if (gcn64_handle) {
+		/* RomClosed() should have done this, but just
+		   in case it is not always called, do this again here. */
+		gcn64lib_suspendPolling(gcn64_handle, 0);
+
 		gcn64_closeDevice(gcn64_handle);
 	}
 
