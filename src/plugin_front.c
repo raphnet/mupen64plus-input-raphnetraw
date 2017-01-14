@@ -96,7 +96,7 @@ static void DebugMessage(int level, const char *message, ...)
 	}
 
 	va_start(args, message);
-	vsprintf(msgbuf, message, args);
+	vsnprintf(msgbuf, sizeof(msgbuf), message, args);
 
 	(*l_DebugCallback)(l_DebugCallContext, level, msgbuf);
 
