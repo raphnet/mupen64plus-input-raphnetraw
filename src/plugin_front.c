@@ -56,6 +56,18 @@
 
 #include <errno.h>
 
+#define MAX_CONTROLLERS	4
+
+#ifdef PORTS_1_AND_4
+static int emu2adap_portmap[MAX_CONTROLLERS] = { 0, 2, 3, 1 };
+#undef PLUGIN_NAME
+#define PLUGIN_NAME "raphnetraw ports 1 and 4"
+#else
+static int emu2adap_portmap[MAX_CONTROLLERS] = { 0, 1, 2, 3 };
+#endif
+
+#define EMU_2_ADAP_PORT(a)	((a) == -1 ? -1 : emu2adap_portmap[a])
+
 /* definitions of pointers to Core config functions */
 ptr_ConfigOpenSection      ConfigOpenSection = NULL;
 ptr_ConfigDeleteSection    ConfigDeleteSection = NULL;
@@ -221,7 +233,7 @@ EXPORT m64p_error CALL PluginGetVersion(m64p_plugin_type *PluginType, int *Plugi
 *******************************************************************/
 EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 {
-    int i, n_controllers;
+    int i, n_controllers, adap_port;
 
 	n_controllers = pb_scanControllers();
 
@@ -230,15 +242,19 @@ EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 		return;
 	}
 
-	for (i=0; i<n_controllers; i++) {
-		ControlInfo.Controls[i].RawData = 1;
+	for (i=0; i<MAX_CONTROLLERS; i++) {
+		adap_port = EMU_2_ADAP_PORT(i);
 
-		/* Setting this is currently required or we
-		 * won't be called at all.
-		 *
-		 * Look at pif.c update_pif_write() to see why.
-		 */
-		ControlInfo.Controls[i].Present = 1;
+		if (adap_port < n_controllers) {
+			ControlInfo.Controls[i].RawData = 1;
+
+			/* Setting this is currently required or we
+			 * won't be called at all.
+			 *
+			 * Look at pif.c update_pif_write() to see why.
+			 */
+			ControlInfo.Controls[i].Present = 1;
+		}
 	}
 
     DebugMessage(PB_MSG_INFO, "%s version %i.%i.%i %s(compiled "__DATE__" "__TIME__") initialized.", PLUGIN_NAME, VERSION_PRINTF_SPLIT(PLUGIN_VERSION),
@@ -264,12 +280,12 @@ EXPORT void CALL InitiateControllers(CONTROL_INFO ControlInfo)
 *******************************************************************/
 EXPORT void CALL ReadController(int Control, unsigned char *Command)
 {
-	pb_readController(Control, Command);
+	pb_readController(EMU_2_ADAP_PORT(Control), Command);
 }
 
 EXPORT void CALL ControllerCommand(int Control, unsigned char *Command)
 {
-	pb_controllerCommand(Control, Command);
+	pb_controllerCommand(EMU_2_ADAP_PORT(Control), Command);
 }
 
 EXPORT void CALL GetKeys( int Control, BUTTONS *Keys ) { }
