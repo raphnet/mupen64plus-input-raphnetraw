@@ -211,6 +211,9 @@ endif
 ifeq ($(PLUGINDBG), 1)
   CFLAGS += -D_DEBUG
 endif
+ifeq ($(PORTS_1_AND_4), 1)
+  CFLAGS += -DPORTS_1_AND_4
+endif
 
 # set installation options
 ifeq ($(PREFIX),)
@@ -276,6 +279,8 @@ targets:
 	@echo "    DEBUG=1       == add debugging symbols"
 	@echo "    PLUGINDBG=1   == print extra debugging information while running"
 	@echo "    V=1           == show verbose compiler output"
+	@echo "  Build Options, tweaks:"
+	@echo "    PORTS_1_AND_4 == N64 port 4 -> Adapter port 2"
 
 all: $(TARGET)
 
