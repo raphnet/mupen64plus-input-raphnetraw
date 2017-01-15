@@ -1,6 +1,10 @@
 # Raphnet raw Input plugin for Mupen64Plus
 --------------------------------
 
+## v1.0.0 - January 15, 2017
+
+* Support for multiple adapters
+
 ## v0.9.4 - December 3, 2016
 
 * Improved structure and separation for easier maintenance of the code shared between the Project 64 and mupen64plus versions of this plugin.
