@@ -58,7 +58,6 @@
 // Filter
 #define EXTENSION_RW_ONLY 0
 
-
 #define MAX_ADAPTERS	4
 #define MAX_CHANNELS	4
 
@@ -302,6 +301,7 @@ static int pb_performIo(void)
 	struct adapter *adap;
 	struct blockio_op *biops;
 	int j, i, res;
+	int op_was_extio[MAX_OPS] = { };
 
 	for (j=0; j<g_n_channels; j++)
 	{
@@ -316,6 +316,7 @@ static int pb_performIo(void)
 		for (i=0; i<adap->n_ops; i++) {
 			if (EXTENSION_RW_ONLY && (biops[i].tx_data[0] < 0x02))
 				continue;
+			op_was_extio[i] = 1;
 			printf("Before blockIO: op %d, chn: %d, : tx: 0x%02x, rx: 0x%02x, data: ", i, biops[i].chn,
 						biops[i].tx_len, biops[i].rx_len);
 			printHexBuf(biops[i].tx_data, biops[i].tx_len);
@@ -340,7 +341,7 @@ static int pb_performIo(void)
 				biops[i].tx_data[-1] = biops[i].rx_len;
 
 #ifdef TRACE_BLOCK_IO
-				if (EXTENSION_RW_ONLY && (biops[i].tx_data[0] < 0x02))
+				if (EXTENSION_RW_ONLY && (!op_was_extio[i])) // Read
 					continue;
 
 				printf("After blockIO: op %d, chn: %d, : tx: 0x%02x, rx: 0x%02x, data: ", i, biops[i].chn,

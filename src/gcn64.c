@@ -1,5 +1,5 @@
 /*	gc_n64_usb : Gamecube or N64 controller to USB adapter firmware
-	Copyright (C) 2007-2015  Raphael Assenat <raph@raphnet.net>
+	Copyright (C) 2007-2017  Raphael Assenat <raph@raphnet.net>
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -53,15 +53,13 @@ static struct supported_adapter supported_adapters[] = {
 	{ OUR_VENDOR_ID, 0x0036, 1, { 2, 1 } }, // GC/N64 USB v3.4.x (2x N64-only mode)
 	{ OUR_VENDOR_ID, 0x0037, 1, { 2, 1 } }, // GC/N64 USB v3.4.x (2x GC-only mode)
 
-	// For future use...
-	{ OUR_VENDOR_ID, 0x0038, 1, { 2, 1 } },
-	{ OUR_VENDOR_ID, 0x0039, 1, { 2, 1 } },
-	{ OUR_VENDOR_ID, 0x003A, 1, { 2, 1 } },
-	{ OUR_VENDOR_ID, 0x003B, 1, { 2, 1 } },
-	{ OUR_VENDOR_ID, 0x003C, 1, { 2, 1 } },
-	{ OUR_VENDOR_ID, 0x003D, 1, { 2, 1 } },
-	{ OUR_VENDOR_ID, 0x003E, 1, { 2, 1 } },
-	{ OUR_VENDOR_ID, 0x003F, 1, { 2, 1 } },
+	// GC/N64 USB v3.5.x flavours
+	{ OUR_VENDOR_ID, 0x0038, 1, { 1, 1 } }, // (GC/N64 mode)
+	{ OUR_VENDOR_ID, 0x0039, 1, { 1, 1 } }, // (N64 mode)
+	{ OUR_VENDOR_ID, 0x003A, 1, { 1, 1 } }, // (GC mode)
+	{ OUR_VENDOR_ID, 0x003B, 2, { 2, 1 } }, // (2x GC/N64 mode)
+	{ OUR_VENDOR_ID, 0x003C, 2, { 2, 1 } }, // (2x N64-only mode)
+	{ OUR_VENDOR_ID, 0x003D, 2, { 2, 1 } }, // (2x GC-only mode)
 
 	{ }, // terminator
 };
