@@ -1,6 +1,10 @@
 # Raphnet raw Input plugin for Mupen64Plus
 --------------------------------
 
+## v1.0.2 - November 6, 2018
+
+* Add support for the 3.6.x adapter firmware
+
 ## v1.0.1 - November 22, 2017
 
 * Add support for the upcoming 3.5.x adapter firmware
