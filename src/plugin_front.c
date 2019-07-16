@@ -126,8 +126,9 @@ EXPORT m64p_error CALL PluginStartup(m64p_dynlib_handle CoreLibHandle, void *Con
 
     int ConfigAPIVersion, DebugAPIVersion, VidextAPIVersion;
 
-    if (l_PluginInit)
-        return M64ERR_ALREADY_INIT;
+    if (l_PluginInit) {
+    	return M64ERR_ALREADY_INIT;
+	}
 
 	l_DebugCallback = DebugCallback;
 	l_DebugCallContext = Context;
@@ -188,8 +189,9 @@ EXPORT m64p_error CALL PluginStartup(m64p_dynlib_handle CoreLibHandle, void *Con
 
 EXPORT m64p_error CALL PluginShutdown(void)
 {
-    if (!l_PluginInit)
-        return M64ERR_NOT_INIT;
+    if (!l_PluginInit) {
+		return M64ERR_NOT_INIT;
+	}
 
 	/* reset some local variables */
 	l_DebugCallback = NULL;
