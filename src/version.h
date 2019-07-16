@@ -27,7 +27,7 @@
 #define VERSION_H
 
 #define PLUGIN_NAME    "Mupen64Plus raphnetraw Input Plugin"
-#define PLUGIN_VERSION           0x010002
+#define PLUGIN_VERSION           0x010100
 //#define INPUT_PLUGIN_API_VERSION 0x020000
 #define INPUT_PLUGIN_API_VERSION 0x020100
 #define CONFIG_API_VERSION       0x020100
