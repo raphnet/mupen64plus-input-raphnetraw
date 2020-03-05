@@ -1,3 +1,0 @@
-LIBRARY SDL.dll
-EXPORTS
-SDL_PumpEvents
