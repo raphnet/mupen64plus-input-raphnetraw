@@ -293,20 +293,8 @@ EXPORT void CALL ControllerCommand(int Control, unsigned char *Command)
 	pb_controllerCommand(EMU_2_ADAP_PORT(Control), Command);
 }
 
-#if PLUGIN_VERSION >= 0x010002
-void SDL_PumpEvents(void);
-#endif
-
 EXPORT void CALL GetKeys( int Control, BUTTONS *Keys )
 {
-	/* Since March 23, 2018, the SDL_PumpEvents() is supposed to be called
-	   by the input plugin. Even though this plugin has nothing to do with
-	   SDL, it must now call SDL_PumpEvents. Otherwise non-input events
-	   such as SDL_QUIT (which occur when one tries to close the window)
-	   are never emitted! */
-#if PLUGIN_VERSION >= 0x010002
-	SDL_PumpEvents();
-#endif
 }
 
 EXPORT void CALL RomClosed(void)
