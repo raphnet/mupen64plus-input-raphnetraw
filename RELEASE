@@ -1,6 +1,10 @@
 # Raphnet raw Input plugin for Mupen64Plus
 --------------------------------
 
+## v1.1.1 - February 27, 2021
+
+* Remove SDL Pump events.
+
 ## v1.1.0 - July 16, 2019
 
 * Update to input plugin API 2.1.0
